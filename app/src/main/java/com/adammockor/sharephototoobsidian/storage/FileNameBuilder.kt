@@ -26,7 +26,7 @@ object FileNameBuilder {
         val timestamp = extractTimestamp(context, uri)
         val formatted = outputFormat.format(timestamp)
 
-        return "${original}_${formatted}.$extension"
+        return "${formatted}_${original}.$extension"
     }
 
     private fun extractTimestamp(context: Context, uri: Uri): Date {
