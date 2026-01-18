@@ -29,17 +29,32 @@ object FileNameBuilder {
         return "${formatted}_${original}.$extension"
     }
 
+    private fun parseExifDate(value: String): Date? {
+        return try {
+            // EXIF format: "yyyy:MM:dd HH:mm:ss"
+            SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.US)
+                .parse(value)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     private fun extractTimestamp(context: Context, uri: Uri): Date {
         return try {
             context.contentResolver.openInputStream(uri).use { input ->
-                if (input != null) {
-                    val exif = ExifInterface(input)
-                    exif.getDateTimeOriginal()?.let { Date(it) }
-                } else null
+                if (input == null) return@use null
+
+                val exif = ExifInterface(input)
+
+                val raw =
+                    exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL)
+                        ?: exif.getAttribute(ExifInterface.TAG_DATETIME)
+
+                raw?.let { parseExifDate(it) }
             }
         } catch (_: Exception) {
             null
-        } ?: Date() // fallback: now
+        } ?: Date()
     }
 
     private fun queryDisplayName(context: Context, uri: Uri): String? {

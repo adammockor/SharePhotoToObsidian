@@ -10,11 +10,11 @@ object ShareIntentParser {
 
         when (intent.action) {
             Intent.ACTION_SEND -> {
-                intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
+                intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
                     ?.let { result += it }
             }
             Intent.ACTION_SEND_MULTIPLE -> {
-                intent.getParcelableArrayListExtra<Uri>(Intent.EXTRA_STREAM)
+                intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM,Uri::class.java)
                     ?.let { result += it }
             }
         }
