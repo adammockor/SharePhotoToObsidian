@@ -15,7 +15,7 @@ Android app that lets you share photos (e.g. from Google Photos) directly into a
 
 ## Filename format
 
-`_yyyy-MM-dd_HH-mm-ss.jpg`
+`{original_filename}_yyyy-MM-dd_HH-mm-ss.{extension}`
 
 ## Notes
 - Uses Android Storage Access Framework (no hardcoded paths)
